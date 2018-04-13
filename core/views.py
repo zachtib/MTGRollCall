@@ -22,3 +22,7 @@ def autoconfigure(request):
     admin.save()
 
     return HttpResponse('Admin user created')
+
+
+def dashboard(request):
+    return render(request, 'base.html')
