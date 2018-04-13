@@ -1,3 +1,13 @@
 from django.contrib import admin
 
-# Register your models here.
+from playgroup.models import PlayGroup, Membership
+
+
+class MembershipInline(admin.TabularInline):
+    model = Membership
+
+@admin.register(PlayGroup)
+class PlayGroupAdmin(admin.ModelAdmin):
+    inlines = [
+        MembershipInline,
+    ]
