@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>My Groups</h2>
+<ul>
+{% for group in owned_playgroups %}
+    <li>{{ group }}</li>
+{% endfor %}
+</ul>
+
+<h2>My Memberships</h2>
+<ul>
+{% for group in joined_playgroups %}
+    <li>{{ group }}</li>
+{% endfor %}
+</ul>
+
+
+{% endblock %}
