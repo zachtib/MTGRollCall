@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.http import Http404
+from django.shortcuts import render, get_object_or_404
 
 from playgroup.models import PlayGroup
 
@@ -16,3 +16,12 @@ def dashboard(request):
 @login_required
 def create(request):
     pass
+
+@login_required
+def details(request, id):
+    playgroup: PlayGroup = get_object_or_404(PlayGroup, pk=id)
+    if not playgroup.viewable_by(request.user):
+        raise Http404()
+    return render(request, 'playgroup/details.html', {
+        'playgroup': playgroup,
+    })

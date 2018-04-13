@@ -7,6 +7,13 @@ class PlayGroup(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     members = models.ManyToManyField(User, through='Membership', related_name='playgroups')
 
+    def viewable_by(self, user: User):
+        if self.owner == user:
+            return True
+        elif self in user.playgroups.all():
+            return True
+        return False
+
     def __str__(self):
         return self.name
 
