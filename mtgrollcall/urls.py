@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('playgroup/', include('playgroup.urls')),
+    path('event/', include('event.urls')),
     path('autoconfigure/', core_views.autoconfigure),
     path('', core_views.dashboard),
 ]
