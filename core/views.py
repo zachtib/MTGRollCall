@@ -25,4 +25,6 @@ def autoconfigure(request):
 
 
 def dashboard(request):
-    return render(request, 'base.html')
+    return render(request, 'base.html', {
+        'title': 'Dashboard',
+    })
