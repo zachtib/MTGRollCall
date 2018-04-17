@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_http_methods
 
 from event.forms import EventCreateForm
+from event.models import Invitation
 
 @login_required
 @require_http_methods(["GET", "POST"])
@@ -17,4 +18,11 @@ def create(request):
         form = EventCreateForm()
     return render(request, 'event/create.html', {
         'form': form,
+    })
+
+def respond(request, event_id, invite_id, user_id):
+    invite = get_object_or_404(Invitation, id=invite_id, event__id=event_id, user__id=user_id)
+
+    return render(request, 'base.html', {
+        'invite': invite,
     })
