@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    "anymail",
     
     'core',
     'playgroup',
@@ -124,6 +126,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', "you@example.com")
+ANYMAIL = {
+    "MAILGUN_API_KEY": os.getenv('MAILGUN_API_KEY', None),
+}
+if ANYMAIL['MAILGUN_API_KEY'] is not None:
+    EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 import django_heroku
 django_heroku.settings(locals())
