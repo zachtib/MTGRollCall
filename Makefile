@@ -1,2 +1,2 @@
 freeze:
-	pip freeze | grep -v "pkg-resources" > requirements.txt
+	pip freeze | grep -Ev "^(pkg-resources|pylint|pep8)" > requirements.txt
