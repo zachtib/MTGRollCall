@@ -1,0 +1,14 @@
+{% extends 'bootstrap.html' %}
+
+{% block body %}
+    <div class="container">
+    <h3>{{ invitation.event.playgroup }}</h3>
+
+    <div class="mt-2 mb-2">
+        {{ invitation.member }}, you've been invited to {{ invitation.event.name }} on {{ invitation.event.date }}. To RSVP, please click one of the buttons below:
+    </div>
+
+    <p><a href="#" class="btn btn-block btn-success">Going</a></p>
+    <p><a href="#" class="btn btn-block  btn-danger">Not Going</a></p>
+</div>
+{% endblock %}

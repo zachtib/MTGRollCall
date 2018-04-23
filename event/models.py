@@ -3,7 +3,7 @@ import uuid
 from django.contrib.auth.models import User
 from django.db import models
 
-from playgroup.models import PlayGroup
+from playgroup.models import PlayGroup, Membership
 
 
 class Event(models.Model):
@@ -11,8 +11,11 @@ class Event(models.Model):
     name = models.CharField(max_length=80)
     date = models.DateField()
 
+    def __str__(self):
+        return self.name
+
 
 class Invitation(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, related_name='invitations', on_delete=models.CASCADE)
+    member = models.ForeignKey(Membership, on_delete=models.CASCADE)

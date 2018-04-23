@@ -20,9 +20,9 @@ def create(request):
         'form': form,
     })
 
-def respond(request, event_id, invite_id, user_id):
-    invite = get_object_or_404(Invitation, id=invite_id, event__id=event_id, user__id=user_id)
+def respond(request, event_id, invite_id):
+    invite = get_object_or_404(Invitation, id=invite_id, event__id=event_id)
 
-    return render(request, 'base.html', {
-        'invite': invite,
+    return render(request, 'email/invite.html', {
+        'invitation': invite,
     })
