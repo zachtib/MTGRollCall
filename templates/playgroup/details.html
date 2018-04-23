@@ -4,5 +4,11 @@
 
 <h2>{{ playgroup }}</h2>
 
+<h3>Members</h3>
+<ul>
+    {% for member in playgroup.members.all %}
+    <li>{{ member }}</li>
+    {% endfor %}
+</ul>
 
 {% endblock %}
