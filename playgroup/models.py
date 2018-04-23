@@ -16,9 +16,15 @@ class PlayGroup(models.Model):
 
 
 class Membership(models.Model):
-    playgroup = models.ForeignKey(PlayGroup, related_name='membership',
+    playgroup = models.ForeignKey(PlayGroup, related_name='members',
                                   on_delete=models.CASCADE)
+    display_name = models.CharField(max_length=255)
     email = models.EmailField()
 
+    @property
+    def is_registered(self):
+        # TODO: Implement when user registrations are available
+        return False
+
     def __str__(self):
-        return f'{self.email} is in {self.playgroup}'
+        return self.display_name
