@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY') or 'bk)$vqt^j00(95e7&&ee0bubeclj1ov)g)
 DEBUG = os.environ.get('DEBUG', '0') == '1'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,0.0.0.0').split(',')
-
+INTERNAL_IPS = ('127.0.0.1', )
 
 # Application definition
 
@@ -37,13 +37,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
+    'debug_toolbar',
+    'anymail',
+
     'core',
     'playgroup',
     'event',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -128,6 +132,16 @@ DATE_FORMAT = '%m/%d/%Y'
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', "you@example.com")
+ANYMAIL = {
+    "MAILGUN_API_KEY": os.getenv('MAILGUN_API_KEY', None),
+}
+if ANYMAIL['MAILGUN_API_KEY'] is not None:
+    EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 import django_heroku
 django_heroku.settings(locals())
