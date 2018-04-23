@@ -1,11 +1,12 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
 from event.forms import EventCreateForm
-from event.models import Invitation
+from event.models import Event, Invitation
 
 @login_required
 @require_http_methods(["GET", "POST"])
@@ -20,6 +21,26 @@ def create(request):
         form = EventCreateForm()
     return render(request, 'event/create.html', {
         'form': form,
+    })
+
+@login_required
+def details(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+    if not event.viewable_by(request.user):
+        raise Http404()
+    
+    responses = event.invitations.all().values('response').annotate(total=Count('response')).order_by('total')
+    count = event.invitations.count()
+    for response in responses:
+        print(response)
+    return render(request, 'event/details.html', {
+        'event': event,
+        'responses': [{
+            'number': response['total'],
+            'display': Invitation.get_choice_display_name(response['response']),
+            'percent': int(response['total'] * 100 / count),
+        } for response in responses],
+        'total_responses': count,
     })
 
 def invitation(request, event_id, invite_id):

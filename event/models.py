@@ -10,20 +10,12 @@ class Event(models.Model):
     playgroup = models.ForeignKey(PlayGroup, on_delete=models.CASCADE)
     name = models.CharField(max_length=80)
     date = models.DateField()
+    
+    def viewable_by(self, user: User):
+        if self.playgroup.owner == user:
+            return True
+        return False
 
-    @property
-    def responses(self):
-        values = {
-            Invitation.NOT_RESPONDED: 0,
-            Invitation.RESPONSE_YES: 0,
-            Invitation.RESPONSE_NO: 0,
-        }
-        for invitation in self.invitations.all():
-            if invitation.response in values.keys():
-                values[invitation.response] += 1
-            else:
-                values[invitation.response] = 1
-        return values
 
     def __str__(self):
         return self.name
@@ -48,3 +40,10 @@ class Invitation(models.Model):
         choices=RESPONSE_CHOICES,
         default=NOT_RESPONDED
     )
+
+    @staticmethod
+    def get_choice_display_name(code):
+        for item in Invitation.RESPONSE_CHOICES:
+            if item[0] == code:
+                return item[1]
+        return 'None'
