@@ -21,8 +21,8 @@ def create(request):
 
 
 @login_required
-def details(request, id):
-    playgroup = get_object_or_404(PlayGroup, pk=id)
+def details(request, group_id):
+    playgroup = get_object_or_404(PlayGroup, pk=group_id)
     if not playgroup.viewable_by(request.user):
         raise Http404()
     return render(request, 'playgroup/details.html', {
