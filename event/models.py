@@ -11,6 +11,20 @@ class Event(models.Model):
     name = models.CharField(max_length=80)
     date = models.DateField()
 
+    @property
+    def responses(self):
+        values = {
+            Invitation.NOT_RESPONDED: 0,
+            Invitation.RESPONSE_YES: 0,
+            Invitation.RESPONSE_NO: 0,
+        }
+        for invitation in self.invitations.all():
+            if invitation.response in values.keys():
+                values[invitation.response] += 1
+            else:
+                values[invitation.response] = 1
+        return values
+
     def __str__(self):
         return self.name
 
