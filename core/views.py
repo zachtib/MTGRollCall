@@ -1,8 +1,9 @@
+import os
+
 from django.contrib.auth.models import User
 from django.http import Http404, HttpResponse
 from django.shortcuts import render
 
-import os
 
 def autoconfigure(request):
     users = User.objects.all()
