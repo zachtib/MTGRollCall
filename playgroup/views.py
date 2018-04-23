@@ -8,10 +8,8 @@ from playgroup.models import PlayGroup
 @login_required
 def dashboard(request):
     owned_playgroups = PlayGroup.objects.filter(owner=request.user)
-    joined_playgroups = request.user.playgroups.all()
     return render(request, 'playgroup/dashboard.html', {
         'owned_playgroups': owned_playgroups,
-        'joined_playgroups': joined_playgroups,
     })
 
 

@@ -6,15 +6,9 @@
 <ul>
 {% for group in owned_playgroups %}
     <li>{{ group }}</li>
+{% empty %}
+    <p>You don't have any groups</p>
 {% endfor %}
 </ul>
-
-<h2>My Memberships</h2>
-<ul>
-{% for group in joined_playgroups %}
-    <li>{{ group }}</li>
-{% endfor %}
-</ul>
-
 
 {% endblock %}
