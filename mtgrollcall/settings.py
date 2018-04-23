@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY') or 'bk)$vqt^j00(95e7&&ee0bubeclj1ov)g)
 DEBUG = os.environ.get('DEBUG', '0') == '1'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,0.0.0.0').split(',')
-
+INTERNAL_IPS = ('127.0.0.1', )
 
 # Application definition
 
@@ -38,13 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    "anymail",
-    
+    'debug_toolbar',
+    'anymail',
+
     'core',
     'playgroup',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
