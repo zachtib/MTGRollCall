@@ -6,7 +6,7 @@
 
         {% for response in responses %}
         <div class="progress mt-2">
-            <div class="progress-bar" style="width: {{response.percent}}%" role="progressbar" aria-valuenow="{{ response.number }}" aria-valuemin="0" aria-valuemax="{{ total_responses }}">{{ response.display }} {{response.number}}/{{total_responses}}</div>
+            <div class="progress-bar" style="width: {{ response.percent }}%" role="progressbar" aria-valuenow="{{ response.number }}" aria-valuemin="0" aria-valuemax="{{ total_responses }}">{{ response.display }} {{ response.number }}/{{ total_responses }}</div>
         </div>
         {% endfor %}
 {% endblock %}
