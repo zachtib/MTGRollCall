@@ -15,8 +15,12 @@ def create(request):
         form = EventCreateForm(request.POST)
         if form.is_valid():
             playgroup = form.cleaned_data['playgroup']
-            print(playgroup)
-
+            event = Event(playgroup=playgroup, name=form.cleaned_data['name'], date=form.cleaned_data['date'])
+            event.save()
+            for member in playgroup.members.all():
+                invitation = Invitation(event=event, member=member)
+                invitation.save()
+            return HttpResponseRedirect(reverse('event:thanks'))
     else:
         form = EventCreateForm()
     return render(request, 'event/create.html', {
