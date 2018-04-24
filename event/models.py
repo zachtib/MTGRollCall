@@ -1,7 +1,9 @@
 import uuid
 
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 from django.db import models
+from django.template.loader import render_to_string
 
 from playgroup.models import PlayGroup, Membership
 
@@ -47,3 +49,11 @@ class Invitation(models.Model):
             if item[0] == code:
                 return item[1]
         return 'None'
+    
+    def send_email(self):
+        subject = "You've been invited"
+        message = render_to_string('email/invite.html', {
+            'invitation': self,
+        })
+
+        send_mail(subject, '', 'noreply@example.com', (self.member.email, ), html_message=message)

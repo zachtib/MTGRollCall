@@ -13,11 +13,19 @@
 
     <div class="row">
         <div class="col-sm">
-            <p><a href="{{ yes_url }}" class="btn btn-block btn-success">Going</a></p>
+            <p><a href="http://{{ request.META.HTTP_HOST }}/event/{{ invitation.event_id }}/respond/{{ invitation.id }}/ye/" class="btn btn-block btn-success">Going</a></p>
         </div>
         <div class="col-sm">
-            <p><a href="{{ no_url }}" class="btn btn-block  btn-danger">Not Going</a></p>
+            <p><a href="http://{{ request.META.HTTP_HOST }}/event/{{ invitation.event_id }}/respond/{{ invitation.id }}/no/" class="btn btn-block  btn-danger">Not Going</a></p>
         </div>
+    </div>
+
+    <div class="row">
+        <p>
+            Alternatively, you can click on
+            <a href="http://{{ request.META.HTTP_HOST }}/event/{{ invitation.event_id }}/respond/{{ invitation.id }}/"> this link </a>
+            to respond in a browser.
+        </p>
     </div>
 </div>
 {% endblock %}

@@ -20,6 +20,7 @@ def create(request):
             for member in playgroup.members.all():
                 invitation = Invitation(event=event, member=member)
                 invitation.save()
+                invitation.send_email()
             return HttpResponseRedirect(reverse('event:thanks'))
     else:
         form = EventCreateForm()
