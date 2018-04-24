@@ -142,6 +142,7 @@ if ANYMAIL['MAILGUN_API_KEY'] is not None:
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+MAILGUN_DOMAIN = os.getenv('MAILGUN_DOMAIN', 'example.com')
 
 import django_heroku
 django_heroku.settings(locals())

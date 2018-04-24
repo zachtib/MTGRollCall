@@ -5,6 +5,7 @@ from django.core.mail import send_mail
 from django.db import models
 from django.template.loader import render_to_string
 
+from mtgrollcall import settings
 from playgroup.models import PlayGroup, Membership
 
 
@@ -56,4 +57,4 @@ class Invitation(models.Model):
             'invitation': self,
         })
 
-        send_mail(subject, '', 'noreply@sandboxe62e4defa5354bde978592a2f1eae986', (self.member.email, ), html_message=message)
+        send_mail(subject, '', f'noreply@{ settings.MAILGUN_DOMAIN }', (self.member.email, ), html_message=message)
