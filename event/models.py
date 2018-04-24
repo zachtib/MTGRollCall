@@ -56,4 +56,4 @@ class Invitation(models.Model):
             'invitation': self,
         })
 
-        send_mail(subject, '', 'noreply@example.com', (self.member.email, ), html_message=message)
+        send_mail(subject, '', 'noreply@sandboxe62e4defa5354bde978592a2f1eae986', (self.member.email, ), html_message=message)
