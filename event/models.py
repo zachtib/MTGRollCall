@@ -19,6 +19,12 @@ class Event(models.Model):
             return True
         return False
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('event:details', kwargs={
+            'event_id': self.id,
+        })
+
     def __str__(self):
         return self.name
 
@@ -28,10 +34,14 @@ class Invitation(models.Model):
     RESPONSE_YES = 'YE'
     RESPONSE_NO = 'NO'
 
+    NOT_RESPONDED_DISPLAY = 'Not responded'
+    RESPONSE_YES_DISPLAY = 'Yes'
+    RESPONSE_NO_DISPLAY = 'No'
+
     RESPONSE_CHOICES = (
-        (NOT_RESPONDED, 'Not responded'),
-        (RESPONSE_YES, 'Yes'),
-        (RESPONSE_NO, 'No'),
+        (NOT_RESPONDED, NOT_RESPONDED_DISPLAY),
+        (RESPONSE_YES, RESPONSE_YES_DISPLAY),
+        (RESPONSE_NO, RESPONSE_NO_DISPLAY),
     )
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -56,7 +66,6 @@ class Invitation(models.Model):
             'event_id': self.event_id,
             'invite_id': self.id,
         })
-        
 
     def send_email(self):
         subject = "You've been invited"

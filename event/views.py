@@ -28,25 +28,47 @@ def create(request):
         'form': form,
     })
 
+
 @login_required
 def details(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     if not event.viewable_by(request.user):
         raise Http404()
-    
-    responses = event.invitations.all().values('response').annotate(total=Count('response')).order_by('total')
+
+    response_dict = {
+        Invitation.RESPONSE_YES_DISPLAY: {
+            'count': 0,
+            'percentage': '',
+            'names': [],
+        },
+        Invitation.RESPONSE_NO_DISPLAY: {
+            'count': 0,
+            'percentage': '',
+            'names': [],
+        },
+        Invitation.NOT_RESPONDED_DISPLAY: {
+            'count': 0,
+            'percentage': '',
+            'names': [],
+        },
+    }
+
+    for invite in event.invitations.all():
+        response = invite.get_response_display()
+        response_dict[response]['names'].append(invite.member.display_name)
     count = event.invitations.count()
-    for response in responses:
-        print(response)
+    for key in response_dict.keys():
+        response_dict[key]['count'] = len(response_dict[key]['names'])
+        response_dict[key]['percentage'] = int(
+            100 * response_dict[key]['count'] / count
+        )
+
     return render(request, 'event/details.html', {
         'event': event,
-        'responses': [{
-            'number': response['total'],
-            'display': Invitation.get_choice_display_name(response['response']),
-            'percent': int(response['total'] * 100 / count),
-        } for response in responses],
+        'responses': response_dict,
         'total_responses': count,
     })
+
 
 def invitation(request, event_id, invite_id):
     invite = get_object_or_404(Invitation, id=invite_id, event__id=event_id)

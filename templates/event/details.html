@@ -1,13 +1,47 @@
 {% extends 'base.html' %}
+{% load invite_extras %}
 
 {% block content %}
 
-    <h2>{{ event.name }}</h2>
+    <h4>
+        {{ event.name }}
+        
+    </h4>
 
-        {% for response in responses %}
-        <div class="progress mt-2">
-            <div class="progress-bar" style="width: {{ response.percent }}%" role="progressbar" aria-valuenow="{{ response.number }}" aria-valuemin="0" aria-valuemax="{{ total_responses }}">{{ response.display }} {{ response.number }}/{{ total_responses }}</div>
-        </div>
+    <p class="text-muted">{{ event.date }}</p>
+
+    <p>Responses:</p>
+    
+    <div class="progress mt-2">
+        {% for answer, response in responses.items %}
+            {% if response.count > 0 %}
+                <div class="progress-bar {{ answer|bg_class }}" style="width: {{ response.percentage }}%" role="progressbar">
+                    {{ answer }} {{ response.count }}/{{ total_responses }}
+                </div>
+                <!-- <ul>
+                {% for name in response.names %}
+                    <li>{{ name }}</li>
+                {% endfor %}
+                </ul> -->
+            {% endif %}
         {% endfor %}
+        <!-- <div class="progress-bar" style="width: {{ response.percentage }}%" role="progressbar" aria-valuenow="{{ response.count }}" aria-valuemin="0" aria-valuemax="{{ total_responses }}">{{ answer }} {{ response.count }}/{{ total_responses }}</div> -->
+    </div>
+    <ul>
+    {% for answer, response in responses.items %}
+        <li>
+            {{ answer }}:
+            {% if response.count > 0 %}
+                <ul>
+                {% for name in response.names %}
+                    <li>{{ name }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <small class="text-muted">(none)</small>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
 {% endblock %}
 
