@@ -13,12 +13,11 @@ class Event(models.Model):
     playgroup = models.ForeignKey(PlayGroup, on_delete=models.CASCADE)
     name = models.CharField(max_length=80)
     date = models.DateField()
-    
+
     def viewable_by(self, user: User):
         if self.playgroup.owner == user:
             return True
         return False
-
 
     def __str__(self):
         return self.name
@@ -50,11 +49,15 @@ class Invitation(models.Model):
             if item[0] == code:
                 return item[1]
         return 'None'
-    
+
     def send_email(self):
         subject = "You've been invited"
         message = render_to_string('email/invite.html', {
             'invitation': self,
         })
 
-        send_mail(subject, '', f'noreply@{ settings.MAILGUN_DOMAIN }', (self.member.email, ), html_message=message)
+        send_mail(subject,
+                  '',
+                  f'noreply@{ settings.MAILGUN_DOMAIN }',
+                  (self.member.email, ),
+                  html_message=message)
