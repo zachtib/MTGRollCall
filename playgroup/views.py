@@ -32,9 +32,10 @@ def create(request):
 
 @login_required
 def edit(request, playgroup_id):
-    playgroup = get_object_or_404(PlayGroup, id=playgroup_id)
-    if playgroup.owner != request.user:
-        raise Http404()
+    playgroup = get_object_or_404(
+        PlayGroup.objects.filter(owner=request.owner),
+        id=playgroup_id)
+    pass
 
 
 @login_required
@@ -45,3 +46,11 @@ def details(request, group_id):
     return render(request, 'playgroup/details.html', {
         'playgroup': playgroup,
     })
+
+
+@login_required
+def newevent(request, group_id):
+    playgroup = get_object_or_404(
+        PlayGroup.objects.filter(owner=request.owner),
+        id=playgroup_id)
+    pass

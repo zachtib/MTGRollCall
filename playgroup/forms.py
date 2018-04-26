@@ -8,10 +8,14 @@ class PlayGroupForm(ModelForm):
         model = PlayGroup
         exclude = ('owner', )
 
+
 class MembershipForm(ModelForm):
     class Meta:
         model = Membership
         exclude = ()
 
 
-MembershipFormset = inlineformset_factory(PlayGroup, Membership, form=MembershipForm)
+MembershipFormset = inlineformset_factory(
+    PlayGroup,
+    Membership,
+    form=MembershipForm)
