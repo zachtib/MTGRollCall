@@ -52,6 +52,7 @@ class Invitation(models.Model):
         choices=RESPONSE_CHOICES,
         default=NOT_RESPONDED
     )
+    sent = models.BooleanField(default=False)
 
     @staticmethod
     def get_choice_display_name(code):
@@ -78,3 +79,5 @@ class Invitation(models.Model):
                   f'noreply@{ settings.MAILGUN_DOMAIN }',
                   (self.member.email, ),
                   html_message=message)
+        self.sent = True
+        self.save()
