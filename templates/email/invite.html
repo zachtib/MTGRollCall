@@ -1,31 +1,42 @@
-{% extends 'bootstrap.html' %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-{% block body %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    {% block css %}{% endblock %}
+    <title>{% if title %}{{ title }}{% else %}MTGRollCall{% endif %}</title>
+  </head>
+  <body>
     <div class="container">
-    <div class="row justify-content-center mt-4">
-        <h3>{{ invitation.event.playgroup }}</h3>
-    </div>
+        <div class="row justify-content-center mt-4">
+            <h3>{{ invitation.event.playgroup }}</h3>
+        </div>
+        
     
-
-    <div class="m-4">
-        {{ invitation.member }}, you've been invited to {{ invitation.event.name }} on {{ invitation.event.date }}. To RSVP, please click one of the buttons below:
-    </div>
-
-    <div class="row">
-        <div class="col-sm">
-            <p><a href="http://{{ request.META.HTTP_HOST }}/event/{{ invitation.event_id }}/respond/{{ invitation.id }}/ye/" class="btn btn-block btn-success">Going</a></p>
+        <div class="m-4">
+            {{ invitation.member }}, you've been invited to {{ invitation.event.name }} on {{ invitation.event.date }}. To RSVP, please click one of the buttons below:
         </div>
-        <div class="col-sm">
-            <p><a href="http://{{ request.META.HTTP_HOST }}/event/{{ invitation.event_id }}/respond/{{ invitation.id }}/no/" class="btn btn-block  btn-danger">Not Going</a></p>
+    
+        <div class="row">
+            <div class="col-sm">
+                <p><a href="http://{{ request.META.HTTP_HOST }}/event/{{ invitation.event_id }}/respond/{{ invitation.id }}/ye/" class="btn btn-block btn-success">Going</a></p>
+            </div>
+            <div class="col-sm">
+                <p><a href="http://{{ request.META.HTTP_HOST }}/event/{{ invitation.event_id }}/respond/{{ invitation.id }}/no/" class="btn btn-block  btn-danger">Not Going</a></p>
+            </div>
+        </div>
+    
+        <div class="row">
+            <p>
+                Alternatively, you can click on
+                <a href="http://{{ request.META.HTTP_HOST }}/event/{{ invitation.event_id }}/respond/{{ invitation.id }}/"> this link </a>
+                to respond in a browser.
+            </p>
         </div>
     </div>
-
-    <div class="row">
-        <p>
-            Alternatively, you can click on
-            <a href="http://{{ request.META.HTTP_HOST }}/event/{{ invitation.event_id }}/respond/{{ invitation.id }}/"> this link </a>
-            to respond in a browser.
-        </p>
-    </div>
-</div>
-{% endblock %}
+  </body>
+</html>
