@@ -54,10 +54,12 @@ def details(request, event_id):
         },
     }
 
-    for invite in event.invitations.all():
+    invitations = event.invitations.select_related('member')
+
+    for invite in invitations:
         response = invite.get_response_display()
         response_dict[response]['names'].append(invite.member.display_name)
-    count = event.invitations.count()
+    count = invitations.count()
     for key in response_dict.keys():
         response_dict[key]['count'] = len(response_dict[key]['names'])
         response_dict[key]['percentage'] = int(
@@ -77,13 +79,13 @@ def invitation(request, event_id, invite_id):
     return render(request, 'email/invite.html', {
         'invitation': invite,
         'yes_url': reverse('event:respond', kwargs={
-            'event_id': event_id, 
-            'invite_id': invite_id, 
+            'event_id': event_id,
+            'invite_id': invite_id,
             'response': Invitation.RESPONSE_YES.lower()
         }),
         'no_url': reverse('event:respond', kwargs={
-            'event_id': event_id, 
-            'invite_id': invite_id, 
+            'event_id': event_id,
+            'invite_id': invite_id,
             'response': Invitation.RESPONSE_NO.lower()
         }),
     })
