@@ -11,4 +11,14 @@
     {% endfor %}
 </ul>
 
+<h3>Upcoming Events</h3>
+<ul>
+    {% for event in events %}
+    <li>
+        <a href="{{ event.get_absolute_url }}">{{ event.name }}</a>        
+        <small class="text-muted">{{ event.date }}</small>
+    </li>
+    {% endfor %}
+</ul>
+
 {% endblock %}
