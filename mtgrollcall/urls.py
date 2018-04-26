@@ -26,7 +26,7 @@ urlpatterns = [
     path('playgroup/', include('playgroup.urls')),
     path('event/', include('event.urls')),
     path('autoconfigure/', core_views.autoconfigure),
-    path('', core_views.landing),
+    path('', core_views.landing, name='landing'),
 ]
 
 

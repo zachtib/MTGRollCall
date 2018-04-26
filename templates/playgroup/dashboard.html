@@ -5,7 +5,7 @@
 <h2>My Groups</h2>
 <ul>
 {% for group in owned_playgroups %}
-    <li>{{ group }}</li>
+    <li><a href="{{ group.get_absolute_url }}">{{ group }}</a></li>
 {% empty %}
     <p>You don't have any groups</p>
 {% endfor %}

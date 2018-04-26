@@ -6,6 +6,12 @@ class PlayGroup(models.Model):
     name = models.CharField(max_length=80)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('playgroup:details', kwargs={
+            'group_id': self.id,
+        })
+
     def viewable_by(self, user: User):
         if self.owner == user:
             return True
