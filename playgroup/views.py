@@ -29,11 +29,13 @@ def create(request):
         'formset': formset,
     })
 
+
 @login_required
 def edit(request, playgroup_id):
     playgroup = get_object_or_404(PlayGroup, id=playgroup_id)
     if playgroup.owner != request.user:
         raise Http404()
+
 
 @login_required
 def details(request, group_id):
