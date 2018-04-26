@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h4>
+        New Event
+        <small class="text-muted">for {{ playgroup }}</small>
+    </h4>
+    <form method="post" action="">{% csrf_token %}
+        <div class="form-group">
+            <label for="id_name">Event name:</label>
+            <input type="text" class="form-control" id="id_name" name="name" data-cip-id="id_name" aria-describedby="nameHelp" placeholder="Enter a name for your event">
+        </div>
+        <div class="form-group">
+            <label for="id_date">Date:</label>
+            <input type="text" readonly="true" class="form-control datepicker" id="id_date" aria-describedby="dateHelp" placeholder="Choose a date">
+            <small id="dateHelp" class="form-text text-muted">Press to select a date</small>
+        </div>
+        
+        <button type="submit" class="btn btn-block btn-primary">Save</button>
+        <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+    
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker3.min.css" integrity="sha256-mlKJFBS1jbZwwDrZD1ApO7YFS6MA1XDN37jZ9GDFC64=" crossorigin="anonymous" />
+{% endblock %}
+
+{% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js" integrity="sha256-tW5LzEC7QjhG0CiAvxlseMTs2qJS7u3DRPauDjFJ3zo=" crossorigin="anonymous"></script>
+<script>
+        $('.datepicker').datepicker({
+            format: 'mm/dd/yyyy',
+        });  
+</script>
+{% endblock %}

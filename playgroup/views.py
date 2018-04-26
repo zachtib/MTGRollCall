@@ -3,8 +3,12 @@ from django.http import Http404
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_http_methods
 
-from playgroup.forms import PlayGroupForm, MembershipFormset
+from playgroup.forms import (PlayGroupForm,
+                             MembershipFormset,
+                             PlayGroupEventForm)
 from playgroup.models import PlayGroup
+
+from event.models import Event
 
 
 @login_required
@@ -31,7 +35,7 @@ def create(request):
 
 
 @login_required
-def edit(request, playgroup_id):
+def edit(request, group_id):
     playgroup = get_object_or_404(
         PlayGroup.objects.filter(owner=request.owner),
         id=playgroup_id)
@@ -49,8 +53,17 @@ def details(request, group_id):
 
 
 @login_required
+@require_http_methods(["GET", "POST"])
 def newevent(request, group_id):
     playgroup = get_object_or_404(
-        PlayGroup.objects.filter(owner=request.owner),
-        id=playgroup_id)
-    pass
+        PlayGroup.objects.filter(owner=request.user),
+        id=group_id)
+    if request.method == 'POST':
+        form = PlayGroupEventForm(request.POST)
+    else:
+        form = PlayGroupEventForm()
+
+    return render(request, 'playgroup/newevent.html', {
+        'playgroup': playgroup,
+        'form': form,
+    })
