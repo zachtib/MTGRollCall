@@ -25,7 +25,6 @@ def autoconfigure(request):
     return HttpResponse('Admin user created')
 
 
-def dashboard(request):
-    return render(request, 'base.html', {
-        'title': 'Dashboard',
+def landing(request):
+    return render(request, 'landing.html', {
     })
