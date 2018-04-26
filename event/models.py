@@ -50,6 +50,14 @@ class Invitation(models.Model):
                 return item[1]
         return 'None'
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('event:invitation', kwargs={
+            'event_id': self.event_id,
+            'invite_id': self.id,
+        })
+        
+
     def send_email(self):
         subject = "You've been invited"
         message = render_to_string('email/invite.html', {
