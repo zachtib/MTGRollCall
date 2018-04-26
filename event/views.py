@@ -8,6 +8,7 @@ from django.views.decorators.http import require_http_methods
 from event.forms import EventCreateForm
 from event.models import Event, Invitation
 
+
 @login_required
 @require_http_methods(["GET", "POST"])
 def create(request):
@@ -87,6 +88,7 @@ def invitation(request, event_id, invite_id):
         }),
     })
 
+
 def respond(request, event_id, invite_id, response):
     invite = get_object_or_404(Invitation, id=invite_id, event__id=event_id)
     response = response.upper()
@@ -95,6 +97,7 @@ def respond(request, event_id, invite_id, response):
     invite.response = response
     invite.save()
     return HttpResponseRedirect(reverse('event:thanks'))
+
 
 def thanks(request):
     return render(request, 'event/thanks.html')
