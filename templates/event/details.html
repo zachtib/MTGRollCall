@@ -18,14 +18,8 @@
                 <div class="progress-bar {{ answer|bg_class }}" style="width: {{ response.percentage }}%" role="progressbar">
                     {{ answer }} {{ response.count }}/{{ total_responses }}
                 </div>
-                <!-- <ul>
-                {% for name in response.names %}
-                    <li>{{ name }}</li>
-                {% endfor %}
-                </ul> -->
             {% endif %}
         {% endfor %}
-        <!-- <div class="progress-bar" style="width: {{ response.percentage }}%" role="progressbar" aria-valuenow="{{ response.count }}" aria-valuemin="0" aria-valuemax="{{ total_responses }}">{{ answer }} {{ response.count }}/{{ total_responses }}</div> -->
     </div>
     <ul>
     {% for answer, response in responses.items %}
