@@ -9,23 +9,45 @@
         <small class="text-muted">for {{ playgroup }}</small>
     </h4>
     <form method="post" action="">{% csrf_token %}
-        {% for error in form.errors %}
-        <p>{{ error }}</p>
-        {% endfor %}
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+            {% for error in form.non_field_errors %}
+            {{ error }}
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% with field=form.name %}
         <div class="form-group">
             <label for="id_name">Event name:</label>
-            <input type="text" class="form-control" id="id_name" name="name" data-cip-id="id_name" aria-describedby="nameHelp" placeholder="Enter a name for your event">
+            <input type="text" class="form-control" id="{{ field.id_for_label }}" name="{{ field.name }}" 
+                data-cip-id="id_name" aria-describedby="nameHelp" placeholder="Enter a name for your event">
+            {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endif %}
         </div>
+        {% endwith %}
+        {% with field=form.date %}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    <div class="invalid-feedback">
+                    {{ error }}
+                    </div>
+                {% endfor %}
+            {% endif %}
         <div class="form-group">
-            <label for="id_date">Date:</label>
+            <label for="{{ field.id_for_label }}">Date:</label>
             <div class="input-group date" data-provide="datepicker">
-                <input id="id_date" type="text" class="form-control">
+                <input id="{{ field.id_for_label }}" name="{{ field.name }}" type="text" class="form-control">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="button">Select</button>
                 </div>
             </div>
-            <small id="dateHelp" class="form-text text-muted">Press to select a date</small>
+            {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endif %}
         </div>
+        {% endwith %}
+        
         
         <button type="submit" class="btn btn-block btn-primary">Save</button>
         <input type="hidden" name="next" value="{{ next }}" />
