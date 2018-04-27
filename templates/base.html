@@ -9,12 +9,12 @@
 </button>
 <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
-        {% nav_element 'landing' 'Home' %}
+        {% nav 'landing' 'Home' %}
         {% if request.user.is_authenticated %}
-            {% nav_element 'playgroup:dashboard' 'Playgroups' %}
-            {% nav_element 'logout' 'Logout' %}
+            {% nav 'playgroup:dashboard' 'Playgroups' %}
+            {% nav 'logout' 'Logout' %}
         {% else %}
-            {% nav_element 'login' 'Login' %}
+            {% nav 'login' 'Login' %}
         {% endif %}
     </ul>
 </div>
