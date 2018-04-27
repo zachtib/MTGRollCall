@@ -10,7 +10,7 @@ from playgroup.forms import (PlayGroupForm,
                              PlayGroupEventForm)
 from playgroup.models import PlayGroup
 
-from event.models import Event
+from event.models import Event, Invitation
 
 
 @login_required
@@ -64,6 +64,15 @@ def newevent(request, group_id):
         id=group_id)
     if request.method == 'POST':
         form = PlayGroupEventForm(request.POST)
+        if form.is_valid():
+            event = Event(playgroup=playgroup,
+                          name=form.cleaned_data['name'],
+                          date=form.cleaned_data['date'])
+            event.save()
+            for member in playgroup.members.all():
+                invitation = Invitation(event=event, member=member)
+                invitation.save()
+            return HttpResponseRedirect(playgroup.get_absolute_url())
     else:
         form = PlayGroupEventForm()
 

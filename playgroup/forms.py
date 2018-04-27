@@ -1,28 +1,27 @@
-from django.forms import inlineformset_factory, ModelForm
+from django import forms
 
 from playgroup.models import PlayGroup, Membership
 from event.models import Event
 
 
-class PlayGroupForm(ModelForm):
+class PlayGroupForm(forms.ModelForm):
     class Meta:
         model = PlayGroup
         exclude = ('owner', )
 
 
-class MembershipForm(ModelForm):
+class MembershipForm(forms.ModelForm):
     class Meta:
         model = Membership
         exclude = ()
 
 
-MembershipFormset = inlineformset_factory(
+MembershipFormset = forms.inlineformset_factory(
     PlayGroup,
     Membership,
     form=MembershipForm)
 
 
-class PlayGroupEventForm(ModelForm):
-    class Meta:
-        model = Event
-        fields = ('name', 'date')
+class PlayGroupEventForm(forms.Form):
+    name = forms.CharField()
+    date = forms.DateField()
