@@ -1,5 +1,6 @@
 from datetime import date
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.http import Http404, HttpResponseRedirect
@@ -91,6 +92,7 @@ def newevent(request, group_id):
             for member in playgroup.members.all():
                 invitation = Invitation(event=event, member=member)
                 invitation.save()
+            messages.success(request, 'Event created successfully')
             return HttpResponseRedirect(playgroup.get_absolute_url())
     else:
         form = PlayGroupEventForm()

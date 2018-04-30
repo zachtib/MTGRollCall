@@ -1,7 +1,8 @@
 import os
 
+from django.contrib import messages
 from django.contrib.auth.models import User
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
 
 
@@ -22,9 +23,9 @@ def autoconfigure(request):
     admin.is_staff = True
     admin.save()
 
-    return HttpResponse('Admin user created')
+    messages.success('Admin user created')
+    return HttpResponseRedirect('/')
 
 
 def landing(request):
-    return render(request, 'landing.html', {
-    })
+    return render(request, 'landing.html')
