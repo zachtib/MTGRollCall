@@ -8,8 +8,5 @@ class Command(BaseCommand):
     help = 'Clean up past events'
 
     def handle(self, *args, **kwargs):
-        count = 0
-        for event in Event.objects.filter(date__lt=date.today()):
-            event.delete()
-            count += 1
-        self.stdout.write(self.style.SUCCESS(f'Deleted {count} event(s)'))
+        result = Event.objects.filter(date__lt=date.today()).delete()
+        self.stdout.write(self.style.SUCCESS(f'Deleted {result[0]} event(s)'))
