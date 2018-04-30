@@ -61,7 +61,9 @@ def edit(request, group_id):
                 formset.save()
                 return HttpResponseRedirect(playgroup.get_absolute_url())
     else:
-        member_data = [{'display_name': m.display_name, 'email': m.email} for m in playgroup.members.all()]
+        member_data = [{'display_name': mbr.display_name, 'email': mbr.email}
+                       for mbr
+                       in playgroup.members.all()]
         form = PlayGroupForm(instance=playgroup)
         formset = MembershipFormset(initial=member_data)
     return render(request, 'playgroup/editor.html', {
