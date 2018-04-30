@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from django.http import Http404, HttpResponseRedirect
@@ -21,6 +22,7 @@ def create(request):
             for member in playgroup.members.all():
                 invitation = Invitation(event=event, member=member)
                 invitation.save()
+            messages.success(f'{event} created successfully.')
             return HttpResponseRedirect(reverse('event:thanks'))
     else:
         form = EventCreateForm()
@@ -97,6 +99,7 @@ def respond(request, event_id, invite_id, response):
         raise Http404()
     invite.response = response
     invite.save()
+    messages.success('Your response has been saved. Thank you.')
     return HttpResponseRedirect(reverse('event:thanks'))
 
 
