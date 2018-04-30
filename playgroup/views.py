@@ -24,48 +24,37 @@ def dashboard(request):
 
 @login_required
 @require_http_methods(["GET", "POST"])
-def create(request):
+def manage(request, group_id=None):
+    if group_id:
+        group = get_object_or_404(PlayGroup, pk=group_id, owner=request.user)
+    else:
+        group = None
+
     if request.method == 'POST':
-        form = PlayGroupForm(request.POST)
-        formset = MembershipFormset(request.POST)
+        if group:
+            form = PlayGroupForm(request.POST, instance=group)
+            formset = MembershipFormset(request.POST, instance=group)
+        else:
+            form = PlayGroupForm(request.POST)
+            formset = MembershipFormset(request.POST)
         if form.is_valid() and formset.is_valid():
             with transaction.atomic():
-                playgroup = form.save(commit=False)
-                playgroup.owner = request.user
-                playgroup.save()
-                formset.instance = playgroup
+                group = form.save(commit=False)
+                group.owner = request.user
+                group.save()
+                formset.instance = group
                 formset.save()
-                return HttpResponseRedirect(playgroup.get_absolute_url())
+                return HttpResponseRedirect(group.get_absolute_url())
     else:
-        form = PlayGroupForm()
-        formset = MembershipFormset()
-    return render(request, 'playgroup/editor.html', {
-        'form': form,
-        'formset': formset,
-    })
-
-
-@login_required
-@require_http_methods(["GET", "POST"])
-def edit(request, group_id):
-    playgroup = get_object_or_404(PlayGroup, pk=group_id, owner=request.user)
-    if request.method == 'POST':
-        form = PlayGroupForm(request.POST)
-        formset = MembershipFormset(request.POST)
-        if form.is_valid() and formset.is_valid():
-            with transaction.atomic():
-                playgroup = form.save(commit=False)
-                playgroup.owner = request.user
-                playgroup.save()
-                formset.instance = playgroup
-                formset.save()
-                return HttpResponseRedirect(playgroup.get_absolute_url())
-    else:
-        member_data = [{'display_name': mbr.display_name, 'email': mbr.email}
-                       for mbr
-                       in playgroup.members.all()]
-        form = PlayGroupForm(instance=playgroup)
-        formset = MembershipFormset(initial=member_data)
+        if group:
+            member_data = [{'display_name': m.display_name, 'email': m.email}
+                           for m
+                           in group.members.all()]
+            form = PlayGroupForm(instance=group)
+            formset = MembershipFormset(initial=member_data)
+        else:
+            form = PlayGroupForm()
+            formset = MembershipFormset()
     return render(request, 'playgroup/editor.html', {
         'form': form,
         'formset': formset,
