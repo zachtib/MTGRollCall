@@ -77,7 +77,9 @@ def details(request, group_id):
     playgroup = get_object_or_404(PlayGroup, pk=group_id)
     if not playgroup.viewable_by(request.user):
         raise Http404()
-    events = playgroup.event_set.filter(date__gte=date.today()).order_by('date')
+    events = (playgroup.event_set
+                       .filter(date__gte=date.today())
+                       .order_by('date'))
     return render(request, 'playgroup/details.html', {
         'playgroup': playgroup,
         'events': events,
