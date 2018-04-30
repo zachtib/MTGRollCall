@@ -168,3 +168,5 @@ LOGGING = {
 MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
+
+ADMIN_URL = os.getenv('ADMIN_URL', 'admin')

@@ -21,7 +21,7 @@ from django.urls import path, include
 import core.views as core_views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path(f'{settings.ADMIN_URL}/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('playgroup/', include('playgroup.urls')),
     path('event/', include('event.urls')),
