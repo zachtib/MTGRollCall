@@ -1,3 +1,6 @@
+from base64 import urlsafe_b64decode as decode
+from uuid import UUID
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
@@ -75,7 +78,8 @@ def details(request, event_id):
 
 
 def invitation(request, event_id, invite_id):
-    invite = get_object_or_404(Invitation, id=invite_id, event__id=event_id)
+    invite_uuid = UUID(bytes=decode(invite_id.encode('utf-8')))
+    invite = get_object_or_404(Invitation, id=invite_uuid, event__id=event_id)
 
     return render(request, 'email/invite.html', {
         'invitation': invite,

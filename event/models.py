@@ -1,5 +1,7 @@
 import uuid
 
+from base64 import urlsafe_b64encode as encode
+
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.db import models
@@ -65,7 +67,7 @@ class Invitation(models.Model):
         from django.urls import reverse
         return reverse('event:invitation', kwargs={
             'event_id': self.event_id,
-            'invite_id': self.id,
+            'invite_id': str(encode(self.id.bytes), 'utf-8'),
         })
 
     def send_email(self):
